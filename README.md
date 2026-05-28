@@ -15,7 +15,7 @@ To recreate this project with the same configuration:
 
 ```sh
 # recreate this project
-npx sv@0.15.3 create --template demo --types ts --add tailwindcss="plugins:typography,forms" --install npm baleia-ui
+npx sv@0.15.3 create --template minimal --types ts --add prettier eslint tailwindcss="plugins:typography,forms" sveltekit-adapter="adapter:node" --install npm baleia-ui
 ```
 
 ## Developing

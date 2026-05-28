@@ -1,59 +1,53 @@
 <script lang="ts">
-  import type { HTMLInputAttributes } from 'svelte/elements';
-  import TextInput from './TextInput.svelte';
+//   import { eye, eyeOff } from './icons';
 
-  interface Props extends Omit<HTMLInputAttributes, 'value' | 'placeholder'> {
+  interface Props {
     label?: string;
-    placeholder?: string | null;
+    placeholder?: string;
     value?: string;
-    error?: string;
+    onkeydown?: (e: KeyboardEvent) => void;
+    oninput?: (e: Event) => void;
   }
 
   let {
-    label = 'Senha',
+    label,
     placeholder = '••••••••',
     value = $bindable(''),
-    error = '',
-    disabled = false,
-    class: customClass = '',
-    ...restProps
+    onkeydown,
+    oninput,
   }: Props = $props();
 
-  let showPassword = $state(false);
-
-  function toggleVisibility() {
-    showPassword = !showPassword;
-  }
+  let show = $state(false);
+  let id = Math.random().toString(36).slice(2, 8);
 </script>
 
-<div class="relative w-full {customClass}">
-  <TextInput
-    {label}
-    {placeholder}
-    {disabled}
-    {error}
-    type={showPassword ? 'text' : 'password'}
-    bind:value={value}
-    {...restProps}
-    class="pr-10"
-  />
-
-  <button
-    type="button"
-    onclick={toggleVisibility}
-    {disabled}
-    class="absolute right-3 top-[32px] text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none select-none transition-colors disabled:opacity-50"
-    aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
-  >
-    {#if showPassword}
-      <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+<div class="flex flex-col gap-[5px] mb-[14px]">
+  {#if label}
+    <label for={id} class="text-[11px] font-semibold">{label}</label>
+  {/if}
+  <div class="relative">
+    <input
+      {id}
+      type={show ? 'text' : 'password'}
+      {placeholder}
+      {onkeydown}
+      {oninput}
+      bind:value
+      class="w-full h-10 bg-[var(--bg)] border border-[var(--border)] rounded-md pl-3 pr-10 text-[13px] text-[var(--text)] outline-none transition focus:border-[var(--primary)] focus:shadow-[0_0_0_3px_rgba(59,130,246,.1)] focus:bg-[var(--panel)] placeholder:text-[var(--muted)] dark:bg-[#1c2128] dark:focus:bg-[var(--panel)]"
+    />
+    <button
+      type="button"
+      onclick={() => show = !show}
+      tabindex="-1"
+      class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--text)] transition-colors p-0.5 bg-transparent border-none cursor-pointer"
+    >
+      <svg viewBox="0 0 24 24" class="w-[15px] h-[15px] stroke-current" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;">
+        {#if show}
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>
+        {:else}
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        {/if}
       </svg>
-    {:else}
-      <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-      </svg>
-    {/if}
-  </button>
+    </button>
+  </div>
 </div>
