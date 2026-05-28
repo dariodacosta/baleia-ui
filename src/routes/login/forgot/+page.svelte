@@ -16,9 +16,11 @@
     try {
       await forgotPassword({ email });
       toasts.push({ type: 'success', title: 'Código gerado', message: 'Verifique seu e-mail cadastrado.' });
-      goto('/login/verify');
+      
+      // Passa o email de forma segura no state do histórico de navegação
+      goto('/login/verify', { state: { email } });
     } catch (err: any) {
-      toasts.push({ type: 'error', title: 'Erro', message: 'Não foi possível processar a recuperação de acesso.' });
+      toasts.push({ type: 'error', title: 'Erro', message: 'Não foi possível processar a recuperação.' });
     } finally {
       isLoading = false;
     }
