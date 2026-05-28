@@ -1,23 +1,45 @@
+import { browser } from '$app/environment';
 import type { User } from '$lib/types/auth';
 
-class SessionStore {
-  // Estados reativos usando Runes do Svelte 5
-  user = $state<User | null>(null);
-  token = $state<string | null>(null);
+function createSession() {
+  let user = $state<User | null>(null);
+  let token = $state<string | null>(null);
 
-  constructor() {
-    // No futuro, podemos ler o localStorage aqui se necessário
+  function loadFromStorage() {
+    if (!browser) return;
+    const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+    if (storedToken && storedUser) {
+      token = storedToken;
+      user = JSON.parse(storedUser);
+    }
   }
 
-  setSession(user: User, token: string) {
-    this.user = user;
-    this.token = token;
+  function setSession(newUser: User, newToken: string) {
+    user = newUser;
+    token = newToken;
+    if (browser) {
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify(newUser));
+    }
   }
 
-  clear() {
-    this.user = null;
-    this.token = null;
+  function clear() {
+    user = null;
+    token = null;
+    if (browser) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
   }
+
+  return {
+    get user() { return user; },
+    get token() { return token; },
+    loadFromStorage,
+    setSession,
+    clear,
+  };
 }
 
-export const session = new SessionStore();
+export const session = createSession();
