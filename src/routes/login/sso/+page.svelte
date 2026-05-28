@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { toasts } from '$lib/stores/toasts';
   import Button from '$lib/components/ui/Button.svelte';
   import TextInput from '$lib/components/ui/TextInput.svelte';
@@ -20,14 +21,14 @@
     isLoading = true;
     try {
       // Simulação interna e elegante do redirecionamento do Provedor de Identidade Federado
-      toasts.push({ type: 'info', title: 'Redirecionando', message: `Conectando ao gateway federado corporativo ${domain} via ${activeTab.toUpperCase()}...` });
+      addToast({ type: 'info', title: 'Redirecionando', message: `Conectando ao gateway federado corporativo ${domain} via ${activeTab.toUpperCase()}...` });
       
       // Simula o tempo de handshake de rede externa
       setTimeout(() => {
         window.location.href = '/login/verify';
       }, 1200);
     } catch (err: any) {
-      toasts.push({ type: 'error', title: 'Erro de Federação', message: err.message || 'Configuração não mapeada.' });
+      addToast({ type: 'error', title: 'Erro de Federação', message: err.message || 'Configuração não mapeada.' });
       isLoading = false;
     }
   }

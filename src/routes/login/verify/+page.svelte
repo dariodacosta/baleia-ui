@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { page } from '$app/stores';
   import { toasts } from '$lib/stores/toasts';
   import { goto } from '$app/navigation';
@@ -20,7 +21,7 @@
     isLoading = true;
     setTimeout(() => {
       isLoading = false;
-      toasts.push({ type: 'success', title: 'Código validado', message: 'Identidade confirmada.' });
+      addToast({ type: 'success', title: 'Código validado', message: 'Identidade confirmada.' });
       goto('/login/reset');
     }, 800);
   }
@@ -30,7 +31,7 @@
     
     isResending = true;
     resendText = 'Code resent!';
-    toasts.push({ type: 'info', title: 'Token Disparado', message: `Um novo código foi enviado para ${email}` });
+    addToast({ type: 'info', title: 'Token Disparado', message: `Um novo código foi enviado para ${email}` });
 
     // Restaura o texto original do link após exatamente 3 segundos
     setTimeout(() => {

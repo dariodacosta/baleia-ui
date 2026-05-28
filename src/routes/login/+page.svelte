@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { login } from '$lib/api/auth';
   import { session } from '$lib/stores/session';
   import { toasts } from '$lib/stores/toasts';
@@ -19,10 +20,10 @@
     try {
       const response = await login({ email, password });
       session.setSession(response.user, response.token);
-      toasts.push({ type: 'success', title: 'Acesso autorizado', message: `Bem-vindo, ${response.user.firstName}!` });
+      addToast({ type: 'success', title: 'Acesso autorizado', message: `Bem-vindo, ${response.user.firstName}!` });
       goto('/');
     } catch (err: any) {
-      toasts.push({ type: 'error', title: 'Erro de autenticação', message: err.message || 'Credenciais inválidas.' });
+      addToast({ type: 'error', title: 'Erro de autenticação', message: err.message || 'Credenciais inválidas.' });
     } finally {
       isLoading = false;
     }

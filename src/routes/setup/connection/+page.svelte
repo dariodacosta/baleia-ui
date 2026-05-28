@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { goto } from '$app/navigation';
   import Button from '$lib/components/ui/Button.svelte';
   import TextInput from '$lib/components/ui/TextInput.svelte';
@@ -16,13 +17,13 @@
 
     setTimeout(() => {
       isLoading = false;
-      toasts.push({ type: 'success', title: 'Conexão Estável', message: 'Conectado ao cluster com sucesso.' });
+      addToast({ type: 'success', title: 'Conexão Estável', message: 'Conectado ao cluster com sucesso.' });
       goto('/setup/sso');
     }, 1200);
   }
 
   function handleSkip() {
-    toasts.push({ type: 'info', title: 'Ignorado', message: 'Você poderá adicionar datasources no painel de configurações posteriormente.' });
+    addToast({ type: 'info', title: 'Ignorado', message: 'Você poderá adicionar datasources no painel de configurações posteriormente.' });
     goto('/setup/done');
   }
 </script>

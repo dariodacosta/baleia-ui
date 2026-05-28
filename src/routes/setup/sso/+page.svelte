@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { goto } from '$app/navigation';
   import Button from '$lib/components/ui/Button.svelte';
   import TextInput from '$lib/components/ui/TextInput.svelte';
@@ -14,7 +15,7 @@
 
     setTimeout(() => {
       isLoading = false;
-      toasts.push({ type: 'success', title: 'Provedor Integrado', message: 'Mapeamento SAML efetuado.' });
+      addToast({ type: 'success', title: 'Provedor Integrado', message: 'Mapeamento SAML efetuado.' });
       goto('/setup/done');
     }, 1000);
   }

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { goto } from '$app/navigation';
   import Button from '$lib/components/ui/Button.svelte';
   import TextInput from '$lib/components/ui/TextInput.svelte';
@@ -17,7 +18,7 @@
     // Simulação da persistência do superusuário no banco local embarcado
     setTimeout(() => {
       isLoading = false;
-      toasts.push({ type: 'success', title: 'Admin Configurado', message: 'Conta mestre criada com credenciais seguras.' });
+      addToast({ type: 'success', title: 'Admin Configurado', message: 'Conta mestre criada com credenciais seguras.' });
       goto('/setup/connection');
     }, 1000);
   }

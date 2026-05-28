@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { goto } from '$app/navigation';
   import Button from '$lib/components/ui/Button.svelte';
   import { toasts } from '$lib/stores/toasts';
@@ -8,7 +9,7 @@
   function finalizeSetup() {
     isLoading = true;
     setTimeout(() => {
-      toasts.push({ type: 'success', title: 'Instalação Pronta', message: 'Bem-vindo ao Baleia SQL Studio!' });
+      addToast({ type: 'success', title: 'Instalação Pronta', message: 'Bem-vindo ao Baleia SQL Studio!' });
       goto('/'); // Envia o administrador para a área logada de produção
     }, 1500);
   }

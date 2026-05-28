@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { forgotPassword } from '$lib/api/auth';
   import { toasts } from '$lib/stores/toasts';
   import { goto } from '$app/navigation';
@@ -15,12 +16,12 @@
     isLoading = true;
     try {
       await forgotPassword({ email });
-      toasts.push({ type: 'success', title: 'Código gerado', message: 'Verifique seu e-mail cadastrado.' });
+      addToast({ type: 'success', title: 'Código gerado', message: 'Verifique seu e-mail cadastrado.' });
       
       // Passa o email de forma segura no state do histórico de navegação
       goto('/login/verify', { state: { email } });
     } catch (err: any) {
-      toasts.push({ type: 'error', title: 'Erro', message: 'Não foi possível processar a recuperação.' });
+      addToast({ type: 'error', title: 'Erro', message: 'Não foi possível processar a recuperação.' });
     } finally {
       isLoading = false;
     }

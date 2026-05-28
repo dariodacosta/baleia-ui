@@ -1,4 +1,5 @@
 <script lang="ts">
+import { addToast } from "$lib/stores/toasts";
   import { resetPassword } from '$lib/api/auth';
   import { toasts } from '$lib/stores/toasts';
   import { goto } from '$app/navigation';
@@ -26,11 +27,11 @@
   async function handleReset(e: SubmitEvent) {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toasts.push({ type: 'warning', title: 'Divergência', message: 'A confirmação de senha não coincide.' });
+      addToast({ type: 'warning', title: 'Divergência', message: 'A confirmação de senha não coincide.' });
       return;
     }
     if (passwordStrength.score < 2) {
-      toasts.push({ type: 'warning', title: 'Senha Vulnerável', message: 'Por favor, melhore a complexidade da sua nova senha.' });
+      addToast({ type: 'warning', title: 'Senha Vulnerável', message: 'Por favor, melhore a complexidade da sua nova senha.' });
       return;
     }
 
@@ -39,7 +40,7 @@
       await resetPassword({ token: 'mock-token', newPassword: password });
       goto('/login/done');
     } catch (err: any) {
-      toasts.push({ type: 'error', title: 'Erro', message: 'Falha ao gravar a nova senha.' });
+      addToast({ type: 'error', title: 'Erro', message: 'Falha ao gravar a nova senha.' });
     } finally {
       isLoading = false;
     }
